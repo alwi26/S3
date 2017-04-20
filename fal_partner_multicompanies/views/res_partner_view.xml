@@ -17,7 +17,7 @@
 
             <xpath expr="//page[1]" position="after">
                 <page string="Companies">
-                    <field name="fal_child_ids" context="{'default_is_company':True, 'is_create_from_parent' : True}"/>
+                    <field name="fal_child_ids" mode="kanban" context="{'default_is_company':True, 'is_create_from_parent' : True}"/>
                 </page>
             </xpath> 
             </field>
