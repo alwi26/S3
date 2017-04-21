@@ -6,7 +6,7 @@ from datetime import timedelta, datetime
 
 class res_partner(models.Model):
     _inherit = 'res.partner'
-    
+
     def update_cron_warning_type(self):
         partner_obj = self.env['res.partner']
         partner_ids = partner_obj.search([('warning_type', '!=', False),'|', ('property_payment_term_id', '=', False),('property_payment_term_id.name', 'not ilike', 'Immediate')])

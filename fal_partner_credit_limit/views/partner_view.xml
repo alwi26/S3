@@ -43,12 +43,10 @@
             <field name="model">sale.order</field>
             <field name="inherit_id" ref="sale.view_order_form"/>
             <field name="arch" type="xml">
-                <button name="action_cancel" position="after">
-                    <button name="action_propose" type="object" string="Propose" states="draft"/>
-                </button>
-
+                <header>
+                <button name="action_propose" type="object" string="Propose" states="draft"/>
                 <field name="state" widget="statusbar" statusbar_visible="draft,sent,sale,waiting"/>
-
+                </header>
                 <field name="client_order_ref" position="after">
                     <field name="available_credit"/>
                 </field>
