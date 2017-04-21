@@ -6,14 +6,23 @@
             <field name="model">res.partner</field>
             <field name="inherit_id" ref="base.view_partner_form" />
             <field name="arch" type="xml">
+                <div name="button_box" position="inside">
+                    <button class="oe_stat_button" type="action" name="%(sale.act_res_partner_2_sale_order)d"
+                        attrs="{'invisible': [('customer', '=', True)]}"
+                        icon="fa-usd">
+                        <field string="Sales" name="sale_order_count2" widget="statinfo"/>
+                    </button>     
+                </div>      
             <field name="parent_id" position="attributes">
                 <attribute name="attrs">{'invisible': ['&amp;',('company_name', '!=', False),('company_name', '!=', '')]}
                 </attribute>
+                <attribute name="placeholder">Keep empty if this is a holding company
+                </attribute>
             </field>
 
-            <xpath expr="//field[@name='parent_id']" position="after">
+<!--             <xpath expr="//field[@name='parent_id']" position="after">
                 <label string="This is a holding companies" context="{'default_is_company': False}" attrs="{'invisible': ['|',('is_company','=', False), ('parent_id','!=', False)]}"/>
-            </xpath>
+            </xpath> -->
 
             <xpath expr="//page[1]" position="after">
                 <page string="Companies">
