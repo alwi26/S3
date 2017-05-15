@@ -1,0 +1,18 @@
+<odoo>
+    <data>
+        <record id="account_invoice_view_inherit" model="ir.ui.view">
+            <field name="name">account.invoice.inherit</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="/form/sheet/notebook/page/group/field[@name='amount_total']" position="after">
+                    <field name="fal_additional_disc"  widget='monetary'/>
+                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                        <label for="fal_nett_total" />
+                    </div>
+                    <field name="fal_nett_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary'/>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</odoo>

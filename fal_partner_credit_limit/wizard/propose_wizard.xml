@@ -2,15 +2,17 @@
 <odoo>
     <data>
         <record id="view_propose_wizard" model="ir.ui.view">
-            <field name="name">propose.wizard</field>
-            <field name="model">propose.wizard</field>
+            <field name="name">fal.propose.wizard</field>
+            <field name="model">fal.propose.wizard</field>
             <field name="arch" type="xml">
                 <form string="Propose">
-                    <label string="order ini membutuhkan approval karena credit available kurang dari 0, apakah akan di proses?"/>
+                    <p>Propose additional credit to your manager in order to continue this quotation.</p>
+                    <group>
+                        <field name="fal_additional_credit"/>
+                    </group>
                     <footer>
                         <button name="propose" string="Propose" type="object" class="oe_highlight"/>
-                        or
-                        <button string="Cancel" class="oe_link" special="cancel"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
                     </footer>
                 </form>
             </field>
@@ -19,7 +21,7 @@
         <record id="action_propose_wizard" model="ir.actions.act_window">
             <field name="name">Propose Wizard</field>
             <field name="type">ir.actions.act_window</field>
-            <field name="res_model">propose.wizard</field>
+            <field name="res_model">fal.propose.wizard</field>
             <field name="view_type">form</field>
             <field name="view_id" ref="view_propose_wizard"/>
             <field name="view_mode">form</field>

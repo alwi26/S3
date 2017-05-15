@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_approve_wizard" model="ir.ui.view">
+            <field name="name">fal.approve.wizard</field>
+            <field name="model">fal.approve.wizard</field>
+            <field name="arch" type="xml">
+                <form string="Approve">
+                    <group>
+                        <field name="fal_proposed_credit" readonly="1"/>
+                        <field name="fal_available_credit" readonly="1"/>
+                    </group>
+                    <footer>
+                        <button name="approve" string="Approve" type="object" class="oe_highlight"/>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_approve_wizard" model="ir.actions.act_window">
+            <field name="name">approve Wizard</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">fal.approve.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_approve_wizard"/>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+    </data>
+</odoo>

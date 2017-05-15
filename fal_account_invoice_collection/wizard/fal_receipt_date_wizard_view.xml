@@ -1,0 +1,21 @@
+<odoo>
+    <record id="fal_receipt_date_wizard_view" model="ir.ui.view">
+        <field name="name">fal_receipt_date_wizard_view</field>
+        <field name="model">fal.receipt.date.wizard</field>
+        <field name="type">form</field>
+        <field name="arch" type="xml">
+            <form string="Fill Receipt Date">
+                <p><b>Please fill receipt date below:</b></p>
+                <group>
+                    <group>
+                        <field name="date"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="assign_receipt_date" type="object" string="Assign Receipt Date" class="btn-primary"/>
+                    <button string="Cancel" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+</odoo>

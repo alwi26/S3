@@ -1,4 +1,4 @@
-from odoo import fields, models
+from odoo import fields, models, api, _
 
 
 class Partner(models.Model):
@@ -10,15 +10,37 @@ class Partner(models.Model):
         string='Children Companies',
         domain=[('is_company', '=', True)]
     )
+    sale_order_count2 = fields.Integer(
+        compute='_compute_sale_order_count2',
+        string='# of Sales Order'
+    )
 
-    sale_order_count2 = fields.Integer(compute='_compute_sale_order_count2', string='# of Sales Order')
+    child_ids = fields.One2many(
+        'res.partner', 'parent_id', string='Contacts',
+        domain=[('active', '=', True), ('is_company', '=', False)]
+    )
 
+    @api.multi
     def _compute_sale_order_count2(self):
-        sale_data = self.env['sale.order'].read_group(domain=[('partner_id', 'child_of', self.ids)],
-                                                      fields=['partner_id'], groupby=['partner_id'])
-        partner_child_ids = self.read(['child_ids'])
-        mapped_data = dict([(m['partner_id'][0], m['partner_id_count']) for m in sale_data])
         for partner in self:
-            partner_ids = filter(lambda r: r['id'] == partner.id, partner_child_ids)[0]
-            partner_ids = [partner_ids.get('id')] + partner_ids.get('child_ids')
-            partner.sale_order_count2 = sum(mapped_data.get(child, 0) for child in partner_ids)
+            childs = self.search([('id', 'child_of', partner.id)])
+            childs_ids = childs.ids
+            sales = self.env['sale.order'].search(
+                [('partner_id', 'in', childs_ids)]
+            )
+            partner.sale_order_count2 = len(sales)
+
+    @api.multi
+    def button_related_sales(self):
+        for partner in self:
+            childs = self.search([('id', 'child_of', partner.id)])
+            childs_ids = childs.ids
+            return {
+                'name': _('Quotations / Sale Orders'),
+                'view_type': 'form',
+                'view_mode': 'tree,form',
+                'res_model': 'sale.order',
+                'type': 'ir.actions.act_window',
+                'domain': [('partner_id', 'in', childs_ids)],
+                'target': 'current',
+            }

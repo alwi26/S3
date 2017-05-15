@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+    	 <record id="view_so_inherit" model="ir.ui.view">
+            <field name="name">sale.order.inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+            	<xpath expr="/form/sheet/notebook/page[1]/group[@name='sale_total']/field[@name='amount_untaxed']" position="before">
+            		<field name="fal_gross_total"  widget='monetary' options="{'currency_field': 'currency_id'}"/>
+            		<field name="fal_disc_total" style="border-bottom:1px solid black" class="oe_subtotal_footer" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+            	</xpath>
+                <xpath expr="/form/sheet/notebook/page[1]/group[@name='sale_total']/field[@name='amount_total']" position="after">
+                    <field name="fal_additional_disc"  widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                    <div class="oe_subtotal_footer_separator oe_inline o_td_label">
+                        <label for="fal_nett_total" />
+                    </div>
+                    <field name="fal_nett_total" nolabel="1" class="oe_subtotal_footer_separator" widget='monetary' options="{'currency_field': 'currency_id'}"/>
+                </xpath>
+            	<xpath expr="/form/sheet/notebook/page[1]/field[@name='note']" position="replace">
+            		<group>
+            		<field name="fal_amount_in_words" />
+            		<field name="note"/>
+            		</group>
+            	</xpath>
+                <xpath expr="//field[@name='user_id']" position="after">
+                    <field name="fal_sale_type" />
+                </xpath>
+                <xpath expr="//field[@name='partner_id']" position="after">
+
+                    <label for="fal_package_id" attrs="{'invisible': [('fal_sale_type','!=','package')]}"/>
+                    <div class="o_row" attrs="{'invisible': [('fal_sale_type','!=','package')]}">
+                        <field name="fal_package_id" />
+                        <button name="load_package" type="object" string="Load Package" class="oe_highlight"/>
+                    </div>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/tree/field[@name='discount']" position='before'>
+                    <field name='fal_is_free'/>
+                </xpath>
+                <xpath expr="//field[@name='order_line']/form/group/group/div[@name='discount']" position='after'>
+                    <label string="Free"/>
+                    <div name="Discount">
+                    <field name='fal_is_free'/>
+                </div>
+                </xpath>
+            </field>
+        </record>
+
+        <!-- view form config package -->
+        <record id="view_sale_package_form" model="ir.ui.view">
+            <field name="name">sale.package.form</field>
+            <field name="model">fal.sale.package</field>
+            <field name="arch" type="xml">
+                <form string="Sale Package">
+                   <sheet>
+                        <div>
+                            <label string="Package Name"/>
+                            <h1>
+                                <field name="name" required="1"/>
+                            </h1>
+                        </div>
+                       <group>
+                            <field name="package_price"/>
+                       </group>
+                       <notebook>
+                            <page string="Products">
+                                <field name="package_line_ids" nolabel="1">
+                                    <tree string="Product" editable="bottom">
+                                        <field name="product_id"/>
+                                        <field name="product_uom_qty"/>
+                                        <field name="product_uom"/>
+                                        <field name="price_unit"/>
+                                        <field name="tax_id" widget="many2many_tags"/>
+                                    </tree>
+                                </field>
+                            </page>
+                       </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <!-- view form config package -->
+        <record id="view_sale_package_tree" model="ir.ui.view">
+            <field name="name">sale.package.tree</field>
+            <field name="model">fal.sale.package</field>
+            <field name="arch" type="xml">
+                <tree string="Sale Package">
+                    <field name="name"/>
+                    <field name="package_price"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_sale_package_action" model="ir.actions.act_window">
+            <field name="name">Sale Package Config</field>
+            <field name="res_model">fal.sale.package</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field eval="False" name="view_id"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to record a new sale package
+              </p>
+            </field>
+        </record>
+
+        <menuitem action="view_sale_package_action" id="menu_action_sale_package" parent="sales_team.menu_sale_config" sequence="1"/>
+    </data>
+</odoo>

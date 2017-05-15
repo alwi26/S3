@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_so_inherit" model="ir.ui.view">
+        <field name="name">sale.order.inherit</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='partner_id']" position="after">
+                <field name="fal_deposit_id" attrs="{'invisible': [('fal_sale_type','!=','agen')]}" domain="[('partner_id','=',partner_id),('state','=','confirm')]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- view form config package -->
+    <record id="view_sale_agent_form" model="ir.ui.view">
+        <field name="name">sale.agent.form</field>
+        <field name="model">fal.sale.deposit</field>
+        <field name="arch" type="xml">
+            <form string="Sale Agent Request">
+               <sheet>
+                    <div>
+                        <label string="Package Name"/>
+                        <h1>
+                            <field name="name"/>
+                        </h1>
+                    </div>
+                   <group>
+                        <group>
+                        <field name="partner_id" domain="[('customer','=',True)]" />
+                        <field name='currency_id'/>
+                        <field name="dp_amount" string="Deposit Amount" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="dp_on_sale" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="dp_settlement" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                        <field name="dp_balance" widget="monetary" options="{'currency_field': 'currency_id'}"/>
+                    </group>
+                        <group>
+                            <field name="company_id"/>
+                            <field name="dp_account"/>
+                        </group>
+                   </group>
+                   <notebook>
+                        <page string="Sale Orders">
+                            <field name="sale_ids" nolabel="1" readonly="1">
+                            </field>
+                        </page>
+                   </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- view form config package -->
+    <record id="view_sale_agent_tree" model="ir.ui.view">
+        <field name="name">sale.agent.tree</field>
+        <field name="model">fal.sale.deposit</field>
+        <field name="arch" type="xml">
+            <tree string="Sale Package">
+                <field name="name"/>
+                <field name="partner_id"/>
+            </tree>
+        </field>
+    </record>
+
+    <record id="view_sale_agent_action" model="ir.actions.act_window">
+        <field name="name">Sale Deposit</field>
+        <field name="res_model">fal.sale.deposit</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree,form</field>
+        <field eval="False" name="view_id"/>
+        <field name="help" type="html">
+          <p class="oe_view_nocontent_create">
+            Click to record a new sale Deposit
+          </p>
+        </field>
+    </record>
+
+    <menuitem action="view_sale_agent_action" id="menu_action_sale_agent" parent="sales_team.menu_sales" sequence="13"/>
+</odoo>

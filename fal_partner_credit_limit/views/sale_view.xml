@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="view_order_form_credit" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header" position="inside">
+                    <button name="action_propose" type="object" string="Propose" attrs="{'invisible': [ ('fal_check', '=', True)]}"/>
+                    <button name="action_approve" type="object" string="Approve"  class="oe_highlight" states="waiting" groups="sales_team.group_sale_manager" context="{'default_proposed_credit': fal_proposed_credit}"/>
+                </xpath>
+
+                <button name="action_confirm" position="attributes">
+                    <attribute name='states'>sent,approved</attribute>
+                </button>
+                <button name="action_quotation_send" position="attributes">
+                    <attribute name='states'>draft,approved</attribute>
+                </button>
+                <button name="print_quotation" position="attributes">
+                    <attribute name='states'>draft,approved</attribute>
+                </button>
+                <button name="action_cancel" position="attributes">
+                    <attribute name='states'>draft,sent,sale,approved</attribute>
+                </button>
+
+                <xpath expr="//page[2]" position="after">
+                    <page string="User Approval">
+                        <field name="fal_approval_user_list_ids" readonly="1">
+                            <tree editable="bottom">
+                                <field name="users_id"/>
+                                <field name="approved"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+
+                <field name="user_id" position="after">
+                    <field name="fal_check" invisible="1"/>
+                    <field name="fal_warning_type" readonly="1"/>
+                    <field name="fal_additional_credit" readonly="1"/>
+                    <field name="fal_proposed_credit" readonly="1" attrs="{'invisible': [ ('state', '=', 'approved')]}"/>
+                    <field name="fal_proposal_approved" readonly="1" />
+                    <field name="fal_available_credit"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</odoo>

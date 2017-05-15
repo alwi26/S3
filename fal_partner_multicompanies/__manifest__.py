@@ -1,20 +1,17 @@
 # -*- coding: utf-8 -*-
 {
-    "name": "Fal Partner Multi Companies",
+    "name": "GEN: Multicompanies Partner",
     "version": "1.0",
-    'author': 'FALINWA Limited',
+    "author": "Falinwa Indonesia",
     "description": """
-    Add Multi Companies
+    Store contacts with multicompany hierarchy
     """,
-    "depends": ['base'],
-    'init_xml': [],
-    'data': [
-        # 'views/web_client_template.xml',
-        'views/res_partner_view.xml',
+    "depends": ["base"],
+    "init_xml": [],
+    "data": [
+        "views/res_partner_view.xml",
     ],
-    'installable': True,
-    'active': False,
-    'application': False,
+    "active": False,
+    "application": False,
+    "installable": True,
 }
-
-# vim:expandtab:smartindent:tabstop=4:softtabstop=4:shiftwidth=4:
